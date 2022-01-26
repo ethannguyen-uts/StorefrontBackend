@@ -24,8 +24,13 @@ export class ProductStore {
     try {
       const conn = await Client.connect();
       const sql =
-        "INSERT INTO products(name, price, category) VALUES ($1, $2, $3) RETURNING *;";
-      const result = await conn.query(sql, [pro.name, pro.price, pro.category]);
+        "INSERT INTO products(id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *;";
+      const result = await conn.query(sql, [
+        pro.id,
+        pro.name,
+        pro.price,
+        pro.category,
+      ]);
       conn.release();
       return result.rows[0];
     } catch (err) {

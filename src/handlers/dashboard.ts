@@ -28,14 +28,14 @@ const productsByCategory = async (_req: Request, res: Response) => {
 };
 
 const currentOrderByUser = async (_req: Request, res: Response) => {
-  const user_id = parseInt(_req.params.id);
+  const user_id = parseInt(_req.params.id) as unknown as number;
 
   const order = await dashboard.currentOrderByUser(user_id);
   res.json(order);
 };
 
 const completedOrdersByUser = async (_req: Request, res: Response) => {
-  const user_id = parseInt(_req.params.id);
+  const user_id = parseInt(_req.params.id) as unknown as number;
 
   const orders = await dashboard.completedOrdersByUser(user_id);
   res.json(orders);

@@ -12,6 +12,7 @@ const index = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const prod: Product = {
+      id: req.body.id,
       name: req.body.name,
       price: req.body.price,
       category: req.body.category,
@@ -19,12 +20,13 @@ const create = async (req: Request, res: Response) => {
 
     //Check input parameter
     if (
+      prod.id === undefined ||
       prod.name === undefined ||
       prod.price === undefined ||
       prod.category === undefined
     ) {
       throw new Error(
-        "Missing products fields, please include name, price and category!"
+        "Missing products fields, please include id, name, price and category!"
       );
     }
     if (prod.name === "" || prod.category === "") {

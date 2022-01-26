@@ -20,18 +20,21 @@ const index = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const u: User = {
+      id: req.body.id as unknown as number,
       first_name: req.body.first_name as unknown as string,
       last_name: req.body.last_name as unknown as string,
       password: req.body.password as unknown as string,
     };
     //Check input parameter
     if (
+      u.id === undefined ||
       u.first_name === undefined ||
       u.last_name === undefined ||
       u.password === undefined
     ) {
       throw new Error("User name and password is not included!");
     }
+
     if (u.first_name === "" || u.last_name === "") {
       throw new Error("User first name and last name must not be empty.");
     }
@@ -74,12 +77,12 @@ const show = async (req: Request, res: Response) => {
 
 const authenticate = async (req: Request, res: Response) => {
   try {
-    const id: number = parseInt(req.params.id);
+    //const id: number = parseInt(req.params.id);
     const first_name: string = req.body.first_name as unknown as string;
     const last_name: string = req.body.last_name as unknown as string;
     const password: string = req.body.password as unknown as string;
 
-    const user = await store.authenticate(id, first_name, last_name, password);
+    const user = await store.authenticate(first_name, last_name, password);
     if (user === null) throw new Error("Authentication failed!");
     const tokenSecret: string = process.env.TOKEN_SECRET as unknown as string;
     if (tokenSecret === undefined) {
@@ -89,7 +92,6 @@ const authenticate = async (req: Request, res: Response) => {
     res.json(token);
   } catch (err) {
     if (err instanceof Error) {
-      console.log(err);
       res.status(400);
       res.json(err.message);
     }
@@ -105,8 +107,8 @@ const update = async (req: Request, res: Response) => {
   };
 
   try {
-    const updated = await store.update(user);
-    res.json(updated);
+    const updatedUser = await store.update(user);
+    res.json(updatedUser);
   } catch (err) {
     if (err instanceof Error) {
       res.status(400);
@@ -116,11 +118,11 @@ const update = async (req: Request, res: Response) => {
 };
 
 const userRoutes = (app: express.Application) => {
-  app.get("/users", verifyAuthToken, index);
+  app.get("/users", index);
   app.post("/users", create);
   app.post("/users/:id", verifyAuthToken, show);
-  app.post("/users/:id/authenticate", authenticate);
-  app.put("/users/:id", update);
+  //app.post("/users/authentication", authenticate);
+  app.put("/users/:id", verifyAuthToken, update);
 };
 
 export default userRoutes;

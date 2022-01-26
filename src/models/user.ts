@@ -3,6 +3,7 @@ import Client from "../database";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import { Pool } from "pg";
+import { response } from "express";
 
 const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
 
@@ -32,12 +33,17 @@ export class UserStore {
       const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : "";
       const saltRounds: number = SALT_ROUNDS ? parseInt(SALT_ROUNDS) : 1;
       const sql =
-        "INSERT INTO users (first_name, last_name, password_digest) VALUES($1, $2, $3) RETURNING *";
+        "INSERT INTO users (id, first_name, last_name, password_digest) VALUES($1, $2, $3, $4) RETURNING *";
       // @ts-ignore
       const conn = await Client.connect();
 
       const hash = bcrypt.hashSync(a.password + pepper, saltRounds);
-      const result = await conn.query(sql, [a.first_name, a.last_name, hash]);
+      const result = await conn.query(sql, [
+        a.id,
+        a.first_name,
+        a.last_name,
+        hash,
+      ]);
       const user = result.rows[0];
 
       conn.release();
@@ -57,6 +63,24 @@ export class UserStore {
       conn.release();
       if (result.rows.length) return result.rows[0];
       else return null;
+    } catch (err) {
+      throw new Error(`Error: ${err}`);
+    }
+  };
+
+  remove = async (id?: number): Promise<void> => {
+    try {
+      const conn = await Client.connect();
+      let sql = `DELETE FROM users`;
+      if (id) {
+        sql += ` WHERE id = ($1);`;
+        await conn.query(sql, [id]);
+      } else {
+        sql += ";";
+        await conn.query(sql);
+      }
+
+      conn.release();
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
@@ -90,7 +114,7 @@ export class UserStore {
   };
 
   authenticate = async (
-    id: number,
+    //id: number,
     first_name: string,
     last_name: string,
     password: string
@@ -98,10 +122,10 @@ export class UserStore {
     try {
       const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : "";
       const sql =
-        "SELECT id, first_name, last_name, password_digest FROM users WHERE id = $1 AND first_name=($2) AND last_name=($3);";
+        "SELECT id, first_name, last_name, password_digest FROM users WHERE first_name=($1) AND last_name=($2);";
 
       const conn = await Client.connect();
-      const result = await conn.query(sql, [id, first_name, last_name]);
+      const result = await conn.query(sql, [first_name, last_name]);
       conn.release();
 
       if (result.rows.length) {
@@ -113,7 +137,6 @@ export class UserStore {
 
       return null;
     } catch (err) {
-      console.log(err);
       throw new Error(
         `Could not authenticate user ${first_name}. Error: ${err}`
       );
