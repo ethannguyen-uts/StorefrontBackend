@@ -4,6 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
+    "prettier": "prettier --config .prettierrc 'src/**/*.{ts,tsx}'",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --quiet",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "test": "npm run build && export ENV=test && db-migrate up --env test && jasmine && db-migrate reset --env test",
     "build": "npx tsc"
@@ -29,12 +31,19 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/pg": "^8.6.4",
     "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "body-parser": "^1.19.1",
     "db-migrate": "^0.11.13",
     "db-migrate-pg": "^1.2.2",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jasmine": "^4.0.2",
     "jasmine-spec-reporter": "^7.0.0",
+    "prettier": "^2.5.1",
     "supertest": "^6.2.2",
+    "ts-node": "^10.4.0",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.5.5"
   },

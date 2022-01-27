@@ -1,10 +1,10 @@
-import express, { Request, Response } from "express";
-import { Order, OrderData, OrderStore } from "../models/order";
-import { verifyAuthToken } from "./middleware";
+import express, { Request, Response } from 'express';
+import { Order, OrderData, OrderStore } from '../models/order';
+import { verifyAuthToken } from './middleware';
 
 const store = new OrderStore();
 
-const index = async (req: Request, res: Response) => {
+const index = async (_req: Request, res: Response) => {
   const orders = await store.index();
   res.json(orders);
 };
@@ -19,13 +19,13 @@ const create = async (req: Request, res: Response) => {
     //Check input parameter
     if (newOrder.status === undefined || newOrder.user_id === undefined) {
       throw new Error(
-        "Missing orders fields, please include status and user id!"
+        'Missing orders fields, please include status and user id!'
       );
     }
-    if (newOrder.status === "") {
-      throw new Error("Status must not be empty.");
+    if (newOrder.status === '') {
+      throw new Error('Status must not be empty.');
     }
-    if (!(newOrder.status === "active" || newOrder.status === "complete")) {
+    if (!(newOrder.status === 'active' || newOrder.status === 'complete')) {
       throw new Error("Status must be 'active' or 'complete'");
     }
     const order: Order = await store.create(newOrder);
@@ -34,7 +34,7 @@ const create = async (req: Request, res: Response) => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    } else throw new Error("Server error!");
+    } else throw new Error('Server error!');
   }
 };
 const show = async (req: Request, res: Response) => {
@@ -46,26 +46,26 @@ const show = async (req: Request, res: Response) => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    } else throw new Error("Server error!");
+    } else throw new Error('Server error!');
   }
 };
 
-const addProduct = async (_req: Request, res: Response) => {
-  const order_id: number = parseInt(_req.params.id);
-  const product_id: number = parseInt(_req.body.product_id);
-  const quantity: number = parseInt(_req.body.quantity);
+const addProduct = async (req: Request, res: Response) => {
+  const order_id: number = parseInt(req.params.id);
+  const product_id: number = parseInt(req.body.product_id);
+  const quantity: number = parseInt(req.body.quantity);
   //Check input parameter
   if (
     order_id === undefined ||
     product_id === undefined ||
     quantity === undefined
   ) {
-    throw new Error("Missing fields, please include productId and quantity!");
+    throw new Error('Missing fields, please include productId and quantity!');
   }
   try {
     const addedProduct = await store.addProduct(quantity, order_id, product_id);
     if (addProduct === null) {
-      res.status(500).json("Server error");
+      res.status(500).json('Server error');
       return;
     }
     res.json(addedProduct);
@@ -73,15 +73,15 @@ const addProduct = async (_req: Request, res: Response) => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    } else throw new Error("Server error!");
+    } else throw new Error('Server error!');
   }
 };
 
 const orderRoutes = (app: express.Application) => {
-  app.get("/orders", index);
-  app.post("/orders/:id", verifyAuthToken, show);
-  app.post("/orders", verifyAuthToken, create);
-  app.post("/orders/:id/products", verifyAuthToken, addProduct);
+  app.get('/orders', index);
+  app.post('/orders/:id', verifyAuthToken, show);
+  app.post('/orders', verifyAuthToken, create);
+  app.post('/orders/:id/products', verifyAuthToken, addProduct);
 };
 
 export default orderRoutes;

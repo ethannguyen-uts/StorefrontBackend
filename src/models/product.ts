@@ -1,4 +1,4 @@
-import Client from "../database";
+import Client from '../database';
 
 export type Product = {
   id?: number;
@@ -10,7 +10,7 @@ export type Product = {
 export class ProductStore {
   async index(): Promise<Product[]> {
     try {
-      const sql = "SELECT id, name, price, category FROM products;";
+      const sql = 'SELECT id, name, price, category FROM products;';
       const conn = await Client.connect();
       const result = await conn.query(sql);
       conn.release();
@@ -24,7 +24,7 @@ export class ProductStore {
     try {
       const conn = await Client.connect();
       const sql =
-        "INSERT INTO products(id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *;";
+        'INSERT INTO products(id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *;';
       const result = await conn.query(sql, [
         pro.id,
         pro.name,

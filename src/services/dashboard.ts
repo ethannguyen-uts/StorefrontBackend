@@ -1,6 +1,5 @@
-import Client from "../database";
-import { Order } from "../models/order";
-import { Product } from "../models/product";
+import Client from '../database';
+import { Order } from '../models/order';
 
 export class DashboardQueries {
   // Top 5 most popular products
@@ -16,7 +15,7 @@ export class DashboardQueries {
     try {
       const conn = await Client.connect();
       const sql =
-        "SELECT a.product_id id, MAX(b.name) name, MAX(b.category) category, MAX(b.price) price, SUM(a.quantity) quantity FROM orders_products a INNER JOIN products b ON a.product_id = b.id GROUP BY a.product_id ORDER BY quantity DESC LIMIT 5;";
+        'SELECT a.product_id id, MAX(b.name) name, MAX(b.category) category, MAX(b.price) price, SUM(a.quantity) quantity FROM orders_products a INNER JOIN products b ON a.product_id = b.id GROUP BY a.product_id ORDER BY quantity DESC LIMIT 5;';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -38,7 +37,7 @@ export class DashboardQueries {
     try {
       const conn = await Client.connect();
       const sql =
-        "SELECT id, name, price, category from products WHERE category = ($1) ORDER BY id DESC";
+        'SELECT id, name, price, category from products WHERE category = ($1) ORDER BY id DESC';
       const result = await conn.query(sql, [category]);
       conn.release();
       return result.rows;
@@ -51,7 +50,6 @@ export class DashboardQueries {
 
   currentOrderByUser = async (user_id: number): Promise<Order> => {
     try {
-      //@ts-ignore
       const conn = await Client.connect();
       const sql =
         "SELECT id, status, user_id FROM orders WHERE status = 'active' AND user_id = ($1) ORDER BY id DESC LIMIT 1";
@@ -68,7 +66,6 @@ export class DashboardQueries {
   };
   completedOrdersByUser = async (user_id: number): Promise<Order[]> => {
     try {
-      //@ts-ignore
       const conn = await Client.connect();
       const sql =
         "SELECT id, status, user_id FROM orders WHERE status = 'complete' AND user_id = ($1) ORDER BY id DESC";

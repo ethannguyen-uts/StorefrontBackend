@@ -1,11 +1,11 @@
-import express, { Request, Response } from "express";
-import { User, UserStore } from "../models/user";
-import jwt from "jsonwebtoken";
-import { verifyAuthToken, isOwnUser } from "./middleware";
+import express, { Request, Response } from 'express';
+import { User, UserStore } from '../models/user';
+import jwt from 'jsonwebtoken';
+import { verifyAuthToken } from './middleware';
 
 const store = new UserStore();
 
-const index = async (req: Request, res: Response) => {
+const index = async (_req: Request, res: Response) => {
   try {
     const listUser: User[] = await store.index();
     res.json(listUser);
@@ -32,14 +32,14 @@ const create = async (req: Request, res: Response) => {
       u.last_name === undefined ||
       u.password === undefined
     ) {
-      throw new Error("User name and password is not included!");
+      throw new Error('User name and password is not included!');
     }
 
-    if (u.first_name === "" || u.last_name === "") {
-      throw new Error("User first name and last name must not be empty.");
+    if (u.first_name === '' || u.last_name === '') {
+      throw new Error('User first name and last name must not be empty.');
     }
-    if (u.password === "" || u.password.length < 6) {
-      throw new Error("Invalid password.");
+    if (u.password === '' || u.password.length < 6) {
+      throw new Error('Invalid password.');
     }
     //Check if user is already exist
     const isExistUser = await store.checkExistUser(u.first_name, u.last_name);
@@ -50,7 +50,7 @@ const create = async (req: Request, res: Response) => {
     const user = await store.create(u);
     const tokenSecret: string = process.env.TOKEN_SECRET as unknown as string;
     if (tokenSecret === undefined) {
-      throw new Error("Token secret is not set");
+      throw new Error('Token secret is not set');
     }
     const token = jwt.sign({ user: user }, tokenSecret);
     res.json(token);
@@ -67,29 +67,6 @@ const show = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const user = await store.show(id);
     res.json(user);
-  } catch (err) {
-    if (err instanceof Error) {
-      res.status(400);
-      res.json(err.message);
-    }
-  }
-};
-
-const authenticate = async (req: Request, res: Response) => {
-  try {
-    //const id: number = parseInt(req.params.id);
-    const first_name: string = req.body.first_name as unknown as string;
-    const last_name: string = req.body.last_name as unknown as string;
-    const password: string = req.body.password as unknown as string;
-
-    const user = await store.authenticate(first_name, last_name, password);
-    if (user === null) throw new Error("Authentication failed!");
-    const tokenSecret: string = process.env.TOKEN_SECRET as unknown as string;
-    if (tokenSecret === undefined) {
-      throw new Error("Token secret is not set");
-    }
-    const token = jwt.sign({ user: user }, tokenSecret);
-    res.json(token);
   } catch (err) {
     if (err instanceof Error) {
       res.status(400);
@@ -118,11 +95,10 @@ const update = async (req: Request, res: Response) => {
 };
 
 const userRoutes = (app: express.Application) => {
-  app.get("/users", index);
-  app.post("/users", create);
-  app.post("/users/:id", verifyAuthToken, show);
-  //app.post("/users/authentication", authenticate);
-  app.put("/users/:id", verifyAuthToken, update);
+  app.get('/users', index);
+  app.post('/users', create);
+  app.post('/users/:id', verifyAuthToken, show);
+  app.put('/users/:id', verifyAuthToken, update);
 };
 
 export default userRoutes;

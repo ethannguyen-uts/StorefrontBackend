@@ -1,25 +1,24 @@
-import supertest from "supertest";
-import { User, UserStore } from "../../models/user";
-import app from "../../server";
-import jwt from "jsonwebtoken";
-import Client from "../../database";
+import supertest from 'supertest';
+import { UserStore } from '../../models/user';
+import app from '../../server';
+import jwt from 'jsonwebtoken';
+import Client from '../../database';
 
 const store = new UserStore();
 let token: string;
-let user: User;
 
 const request = supertest(app);
-describe("Testing users endpoints", () => {
+describe('Testing users endpoints', () => {
   beforeAll(async () => {
     const adminUser = await store.create({
       id: 1,
-      first_name: "admin",
-      last_name: "admin",
-      password: "123456",
+      first_name: 'admin',
+      last_name: 'admin',
+      password: '123456',
     });
     const tokenSecret: string = process.env.TOKEN_SECRET as unknown as string;
     if (tokenSecret === undefined) {
-      throw new Error("Token secret is not set");
+      throw new Error('Token secret is not set');
     }
     token = jwt.sign({ user: adminUser }, tokenSecret);
   });
@@ -27,60 +26,60 @@ describe("Testing users endpoints", () => {
   afterAll(async () => {
     //delete all users;
     const conn = await Client.connect();
-    let sql = "DELETE FROM users;";
+    let sql = 'DELETE FROM users;';
     await conn.query(sql);
     //Reset the sequences
-    sql = "ALTER SEQUENCE users_id_seq RESTART WITH 1;";
+    sql = 'ALTER SEQUENCE users_id_seq RESTART WITH 1;';
     await conn.query(sql);
     conn.release();
   });
 
-  it("create user endpoint, expect sucess", async () => {
+  it('create user endpoint, expect sucess', async () => {
     const user = {
       id: 100,
-      first_name: "Tom",
-      last_name: "Holland",
-      password: "123456",
+      first_name: 'Tom',
+      last_name: 'Holland',
+      password: '123456',
     };
-    const response = await request.post("/users").send(user);
+    const response = await request.post('/users').send(user);
 
     expect(response.status).toBe(200);
   });
 
-  it("index user endpoint, expect sucess", async () => {
-    const response = await request.get("/users");
+  it('index user endpoint, expect sucess', async () => {
+    const response = await request.get('/users');
     expect(response.status).toBe(200);
     expect(response.body).toEqual([
       {
         id: 1,
-        first_name: "admin",
-        last_name: "admin",
+        first_name: 'admin',
+        last_name: 'admin',
       },
       {
         id: 100,
-        first_name: "Tom",
-        last_name: "Holland",
+        first_name: 'Tom',
+        last_name: 'Holland',
       },
     ]);
   });
 
-  it("show user endpoint, expect sucess", async () => {
+  it('show user endpoint, expect sucess', async () => {
     const response = await request
-      .post("/users/2")
-      .auth(token, { type: "bearer" });
+      .post('/users/2')
+      .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
   });
 
-  it("update user endpoint, expect sucess", async () => {
+  it('update user endpoint, expect sucess', async () => {
     const user = {
       id: 100,
-      first_name: "Tom",
-      last_name: "Holland2",
-      password: "654321",
+      first_name: 'Tom',
+      last_name: 'Holland2',
+      password: '654321',
     };
     const response = await request
-      .put("/users/2")
-      .auth(token, { type: "bearer" })
+      .put('/users/2')
+      .auth(token, { type: 'bearer' })
       .send(user);
     expect(response.status).toBe(200);
   });

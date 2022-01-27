@@ -1,17 +1,16 @@
-import express, { Request, Response } from "express";
-
-import { DashboardQueries } from "../services/dashboard";
-import { verifyAuthToken } from "./middleware";
+import express, { Request, Response } from 'express';
+import { DashboardQueries } from '../services/dashboard';
+import { verifyAuthToken } from './middleware';
 
 const dashboardRoutes = (app: express.Application) => {
   app.post(
-    "/orders/users/:id/complete",
+    '/orders/users/:id/complete',
     verifyAuthToken,
     completedOrdersByUser
   );
-  app.post("/orders/users/:id/current", verifyAuthToken, currentOrderByUser);
-  app.get("/top-popular-products", topPopularProducts);
-  app.post("/products-by-category", productsByCategory);
+  app.post('/orders/users/:id/current', verifyAuthToken, currentOrderByUser);
+  app.get('/top-popular-products', topPopularProducts);
+  app.post('/products-by-category', productsByCategory);
 };
 
 const dashboard = new DashboardQueries();
@@ -21,22 +20,21 @@ const topPopularProducts = async (_req: Request, res: Response) => {
   res.json(products);
 };
 
-const productsByCategory = async (_req: Request, res: Response) => {
-  const category = _req.body.category as unknown as string;
+const productsByCategory = async (req: Request, res: Response) => {
+  const category = req.body.category as unknown as string;
   const products = await dashboard.productsByCategory(category);
   res.json(products);
 };
 
-const currentOrderByUser = async (_req: Request, res: Response) => {
-  const user_id = parseInt(_req.params.id) as unknown as number;
+const currentOrderByUser = async (req: Request, res: Response) => {
+  const user_id = parseInt(req.params.id) as unknown as number;
 
   const order = await dashboard.currentOrderByUser(user_id);
   res.json(order);
 };
 
-const completedOrdersByUser = async (_req: Request, res: Response) => {
-  const user_id = parseInt(_req.params.id) as unknown as number;
-
+const completedOrdersByUser = async (req: Request, res: Response) => {
+  const user_id = parseInt(req.params.id) as unknown as number;
   const orders = await dashboard.completedOrdersByUser(user_id);
   res.json(orders);
 };

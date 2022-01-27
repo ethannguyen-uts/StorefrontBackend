@@ -1,9 +1,5 @@
-// @ts-ignore
-import Client from "../database";
-import dotenv from "dotenv";
-import bcrypt from "bcrypt";
-import { Pool } from "pg";
-import { response } from "express";
+import Client from '../database';
+import bcrypt from 'bcrypt';
 
 const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
 
@@ -19,7 +15,7 @@ export class UserStore {
   index = async (): Promise<User[]> => {
     try {
       const conn = await Client.connect();
-      const sql = "SELECT id, first_name, last_name FROM users;";
+      const sql = 'SELECT id, first_name, last_name FROM users;';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -30,13 +26,11 @@ export class UserStore {
 
   create = async (a: User): Promise<User> => {
     try {
-      const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : "";
+      const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : '';
       const saltRounds: number = SALT_ROUNDS ? parseInt(SALT_ROUNDS) : 1;
       const sql =
-        "INSERT INTO users (id, first_name, last_name, password_digest) VALUES($1, $2, $3, $4) RETURNING *";
-      // @ts-ignore
+        'INSERT INTO users (id, first_name, last_name, password_digest) VALUES($1, $2, $3, $4) RETURNING *';
       const conn = await Client.connect();
-
       const hash = bcrypt.hashSync(a.password + pepper, saltRounds);
       const result = await conn.query(sql, [
         a.id,
@@ -45,9 +39,7 @@ export class UserStore {
         hash,
       ]);
       const user = result.rows[0];
-
       conn.release();
-
       return user;
     } catch (err) {
       throw new Error(`Could not add user ${a.first_name}. Error: ${err}`);
@@ -58,7 +50,7 @@ export class UserStore {
     try {
       const conn = await Client.connect();
       const sql =
-        "SELECT id, first_name, last_name FROM users WHERE id = ($1);";
+        'SELECT id, first_name, last_name FROM users WHERE id = ($1);';
       const result = await conn.query(sql, [id]);
       conn.release();
       if (result.rows.length) return result.rows[0];
@@ -76,10 +68,9 @@ export class UserStore {
         sql += ` WHERE id = ($1);`;
         await conn.query(sql, [id]);
       } else {
-        sql += ";";
+        sql += ';';
         await conn.query(sql);
       }
-
       conn.release();
     } catch (err) {
       throw new Error(`Error: ${err}`);
@@ -88,13 +79,11 @@ export class UserStore {
 
   update = async (a: User): Promise<User> => {
     try {
-      const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : "";
+      const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : '';
       const saltRounds: number = SALT_ROUNDS ? parseInt(SALT_ROUNDS) : 1;
       const sql =
-        "UPDATE users SET first_name = $2, last_name = $3, password_digest = $4 WHERE id = $1 RETURNING *";
-      // @ts-ignore
+        'UPDATE users SET first_name = $2, last_name = $3, password_digest = $4 WHERE id = $1 RETURNING *';
       const conn = await Client.connect();
-
       const hash = bcrypt.hashSync(a.password + pepper, saltRounds);
       const result = await conn.query(sql, [
         a.id,
@@ -102,11 +91,8 @@ export class UserStore {
         a.last_name,
         hash,
       ]);
-
       const user = result.rows[0];
-
       conn.release();
-
       return user;
     } catch (err) {
       throw new Error(`Could not update user: userId ${a.id}}. Error: ${err}`);
@@ -114,27 +100,23 @@ export class UserStore {
   };
 
   authenticate = async (
-    //id: number,
     first_name: string,
     last_name: string,
     password: string
   ): Promise<User | null> => {
     try {
-      const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : "";
+      const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : '';
       const sql =
-        "SELECT id, first_name, last_name, password_digest FROM users WHERE first_name=($1) AND last_name=($2);";
-
+        'SELECT id, first_name, last_name, password_digest FROM users WHERE first_name=($1) AND last_name=($2);';
       const conn = await Client.connect();
       const result = await conn.query(sql, [first_name, last_name]);
       conn.release();
-
       if (result.rows.length) {
         const user = result.rows[0];
         if (bcrypt.compareSync(password + pepper, user.password_digest)) {
           return user;
         }
       }
-
       return null;
     } catch (err) {
       throw new Error(
@@ -149,16 +131,13 @@ export class UserStore {
   ): Promise<boolean> => {
     try {
       const sql =
-        "SELECT id, first_name, last_name FROM users WHERE first_name=($1) and last_name=($2);";
-
+        'SELECT id, first_name, last_name FROM users WHERE first_name=($1) and last_name=($2);';
       const conn = await Client.connect();
-      //console.log(conn);
       const result = await conn.query(sql, [first_name, last_name]);
       conn.release();
       if (result.rows.length) {
         return true;
       }
-
       return false;
     } catch (err) {
       throw new Error(

@@ -1,18 +1,17 @@
-import express, { Request, Response } from "express";
-import bodyParser from "body-parser";
-import userRoutes from "./handlers/user";
-import productRoutes from "./handlers/product";
-import orderRoutes from "./handlers/order";
-import dashboardRoutes from "./handlers/dashboard";
-import dotenv from "dotenv";
+import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser';
+import userRoutes from './handlers/user';
+import productRoutes from './handlers/product';
+import orderRoutes from './handlers/order';
+import dashboardRoutes from './handlers/dashboard';
 
 const app: express.Application = express();
-const address: string = "0.0.0.0:3000";
+const address = '0.0.0.0:3000';
 
 app.use(bodyParser.json());
 
-app.get("/", function (_req: Request, res: Response) {
-  res.send("Hello World");
+app.get('/', function (_req: Request, res: Response) {
+  res.send('Hello World');
 });
 
 //Routes
