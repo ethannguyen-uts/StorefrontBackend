@@ -53,6 +53,17 @@ describe('Product Model', () => {
     });
   });
 
+  it('show should get a product based on its id', async () => {
+    //
+    const result = await store.show(1);
+    expect(result).toEqual({
+      id: 1,
+      name: 'Donut',
+      price: 20,
+      category: 'Food',
+    });
+  });
+
   it('index should get a list of products', async () => {
     //
     const result = await store.index();

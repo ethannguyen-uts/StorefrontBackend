@@ -3,9 +3,9 @@ import { User, UserStore } from '../models/user';
 import jwt from 'jsonwebtoken';
 import { verifyAuthToken } from './middleware';
 
-const store = new UserStore();
+const store: UserStore = new UserStore();
 
-const index = async (_req: Request, res: Response) => {
+const index = async (_req: Request, res: Response): Promise<void> => {
   try {
     const listUser: User[] = await store.index();
     res.json(listUser);
@@ -17,7 +17,7 @@ const index = async (_req: Request, res: Response) => {
   }
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
   try {
     const u: User = {
       id: req.body.id as unknown as number,
@@ -64,7 +64,7 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
     const user = await store.show(id);
@@ -77,7 +77,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
   const user: User = {
     id: parseInt(req.params.id),
     first_name: req.body.first_name,
@@ -96,7 +96,7 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
-const userRoutes = (app: express.Application) => {
+const userRoutes = (app: express.Application): void => {
   app.get('/users', verifyAuthToken, index);
   app.post('/users', create);
   app.post('/users/:id', verifyAuthToken, show);

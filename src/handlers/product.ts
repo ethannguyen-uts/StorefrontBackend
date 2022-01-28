@@ -4,12 +4,12 @@ import { verifyAuthToken } from './middleware';
 
 const store = new ProductStore();
 
-const index = async (_req: Request, res: Response) => {
+const index = async (_req: Request, res: Response): Promise<void> => {
   const listProduct: Product[] = await store.index();
   res.json(listProduct);
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
   try {
     const prod: Product = {
       id: req.body.id,
@@ -45,9 +45,23 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const productRoutes = (app: express.Application) => {
+const show = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = parseInt(req.params.id);
+    const product = await store.show(id);
+    res.json(product);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400);
+      res.json(err.message);
+    }
+  }
+};
+
+const productRoutes = (app: express.Application): void => {
   app.get('/products', index);
   app.post('/products', verifyAuthToken, create);
+  app.post('/products/:id', verifyAuthToken, show);
 };
 
 export default productRoutes;

@@ -2,14 +2,14 @@ import express, { Request, Response } from 'express';
 import { Order, OrderData, OrderStore } from '../models/order';
 import { verifyAuthToken } from './middleware';
 
-const store = new OrderStore();
+const store: OrderStore = new OrderStore();
 
-const index = async (_req: Request, res: Response) => {
+const index = async (_req: Request, res: Response): Promise<void> => {
   const orders = await store.index();
   res.json(orders);
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
   try {
     const newOrder = {
       id: req.body.id,
@@ -37,7 +37,7 @@ const create = async (req: Request, res: Response) => {
     } else throw new Error('Server error!');
   }
 };
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response): Promise<void> => {
   try {
     const orderId = parseInt(req.params.id);
     const orderData: OrderData = await store.show(orderId);
@@ -50,7 +50,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const addProduct = async (req: Request, res: Response) => {
+const addProduct = async (req: Request, res: Response): Promise<void> => {
   const order_id: number = parseInt(req.params.id);
   const product_id: number = parseInt(req.body.product_id);
   const quantity: number = parseInt(req.body.quantity);
@@ -77,7 +77,7 @@ const addProduct = async (req: Request, res: Response) => {
   }
 };
 
-const orderRoutes = (app: express.Application) => {
+const orderRoutes = (app: express.Application): void => {
   app.get('/orders', index);
   app.post('/orders/:id', verifyAuthToken, show);
   app.post('/orders', verifyAuthToken, create);

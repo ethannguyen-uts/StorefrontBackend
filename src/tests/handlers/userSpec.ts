@@ -47,7 +47,9 @@ describe('Testing users endpoints', () => {
   });
 
   it('index user endpoint, expect sucess', async () => {
-    const response = await request.get('/users');
+    const response = await request
+      .get('/users')
+      .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
     expect(response.body).toEqual([
       {
@@ -65,7 +67,7 @@ describe('Testing users endpoints', () => {
 
   it('show user endpoint, expect sucess', async () => {
     const response = await request
-      .post('/users/2')
+      .post('/users/1')
       .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
   });
@@ -78,7 +80,7 @@ describe('Testing users endpoints', () => {
       password: '654321',
     };
     const response = await request
-      .put('/users/2')
+      .put('/users/100')
       .auth(token, { type: 'bearer' })
       .send(user);
     expect(response.status).toBe(200);

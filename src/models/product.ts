@@ -23,7 +23,11 @@ export class ProductStore {
   async create(pro: Product): Promise<Product> {
     try {
       const conn = await Client.connect();
-      const sql =
+      let sql = 'SELECT id FROM products WHERE id = ($1)';
+      const checkResult = await conn.query(sql, [pro.id]);
+      if (checkResult.rows.length)
+        throw new Error('Product is is already exist in the database');
+      sql =
         'INSERT INTO products(id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *;';
       const result = await conn.query(sql, [
         pro.id,
@@ -38,4 +42,19 @@ export class ProductStore {
       else throw err;
     }
   }
+
+  show = async (id: number): Promise<Product | null> => {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        'SELECT id, name, price, category FROM products WHERE id = ($1);';
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      if (result.rows.length) return result.rows[0];
+      else return null;
+    } catch (err) {
+      if (err instanceof Error) throw new Error(err.message);
+      else throw err;
+    }
+  };
 }

@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-const verifyAuthToken = (req: Request, res: Response, next: () => void) => {
+const verifyAuthToken = (
+  req: Request,
+  res: Response,
+  next: () => void
+): Response<void> | undefined => {
   try {
     const requestHeaderToken: string = req.headers
       .authorization as unknown as string;
@@ -17,7 +21,11 @@ const verifyAuthToken = (req: Request, res: Response, next: () => void) => {
   }
 };
 
-const isOwnUser = (req: Request, res: Response, next: () => void) => {
+const isOwnUser = (
+  req: Request,
+  res: Response,
+  next: () => void
+): Response<void> | undefined => {
   try {
     const user: { id: number; password: string } = {
       id: parseInt(req.params.id),

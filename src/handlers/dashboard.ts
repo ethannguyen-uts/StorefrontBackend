@@ -15,25 +15,37 @@ const dashboardRoutes = (app: express.Application) => {
 
 const dashboard = new DashboardQueries();
 
-const topPopularProducts = async (_req: Request, res: Response) => {
+const topPopularProducts = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   const products = await dashboard.topPopularProducts();
   res.json(products);
 };
 
-const productsByCategory = async (req: Request, res: Response) => {
+const productsByCategory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const category = req.body.category as unknown as string;
   const products = await dashboard.productsByCategory(category);
   res.json(products);
 };
 
-const currentOrderByUser = async (req: Request, res: Response) => {
+const currentOrderByUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const user_id = parseInt(req.params.id) as unknown as number;
 
   const order = await dashboard.currentOrderByUser(user_id);
   res.json(order);
 };
 
-const completedOrdersByUser = async (req: Request, res: Response) => {
+const completedOrdersByUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const user_id = parseInt(req.params.id) as unknown as number;
   const orders = await dashboard.completedOrdersByUser(user_id);
   res.json(orders);

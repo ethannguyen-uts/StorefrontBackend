@@ -41,7 +41,7 @@ export class OrderStore {
       if (!result.rows.length) throw new Error('Order is not exists!');
       const order: Order = result.rows[0];
       const sqlDetail =
-        'SELECT a.id, a.product_id, c.name product_name, a.quantity, c.price FROM orders_products a INNER JOIN orders b ON a.order_id = b.id INNER JOIN products c ON a.product_id = c.id WHERE b.id = ($1)';
+        'SELECT a.id, a.product_id, c.name product_name, a.quantity, c.price FROM orders_products a INNER JOIN orders b ON a.order_id = b.id INNER JOIN products c ON a.product_id = c.id WHERE b.id = ($1) ORDER BY a.id';
       const detailOrder: DetailOrder[] = (await conn.query(sqlDetail, [id]))
         .rows;
       conn.release();
