@@ -66,7 +66,7 @@ Response:
 - Show: get a user base on id (args: id)[token required]
 
 ```
-POST /users/:id
+GET /users/:id
 ```
 
 Response:
@@ -169,7 +169,7 @@ Response:
 - Show (args: product id)
 
 ```
- POST /products/:id
+ GET /products/:id
 ```
 
 Response:
@@ -234,20 +234,13 @@ Response:
 - Products by category (args: product category)
 
 ```
- POST /products-by-category
+ GET /products-by-category/:category
 ```
-
-Request body parameter
-
-|       Name | Required |  Type  | Description      |
-| ---------: | :------: | :----: | :--------------- |
-| `category` | required | string | Product category |
 
 Response:
 
 ```
 [
-
     {
         "id": 2,
         "name": "Cheese",
@@ -265,7 +258,7 @@ Response:
 
 #### Orders
 
-- List all the orders
+- List all the orders [token required]
 
 ```
  GET /orders
@@ -348,7 +341,7 @@ Response:
 - Show the order by id (args: Order Id)[token required]
 
 ```
- POST /orders/:id
+ GET /orders/:id
 ```
 
 Response:
@@ -380,7 +373,7 @@ Response:
 - Current Order by user (args: user id)[token required]
 
 ```
-POST /orders/users/:id/current
+GET /orders/users/:id/current
 ```
 
 Response:
@@ -397,9 +390,7 @@ Response:
 - Completed Orders by user (args: user id)[token required]
 
 ```
-
-POST /orders/users/:id/complete
-
+GET /orders/users/:id/complete
 ```
 
 Response:

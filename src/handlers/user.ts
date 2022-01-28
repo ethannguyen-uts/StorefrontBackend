@@ -13,7 +13,7 @@ const index = async (_req: Request, res: Response): Promise<void> => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    }
+    } else throw new Error('Server error!');
   }
 };
 
@@ -60,7 +60,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    }
+    } else throw new Error('Server error!');
   }
 };
 
@@ -73,19 +73,18 @@ const show = async (req: Request, res: Response): Promise<void> => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    }
+    } else throw new Error('Server error!');
   }
 };
 
 const update = async (req: Request, res: Response): Promise<void> => {
-  const user: User = {
-    id: parseInt(req.params.id),
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    password: req.body.password,
-  };
-
   try {
+    const user: User = {
+      id: parseInt(req.params.id),
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      password: req.body.password,
+    };
     const updatedUser = await store.update(user);
     res.json(updatedUser);
   } catch (err) {
@@ -99,7 +98,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
 const userRoutes = (app: express.Application): void => {
   app.get('/users', verifyAuthToken, index);
   app.post('/users', create);
-  app.post('/users/:id', verifyAuthToken, show);
+  app.get('/users/:id', verifyAuthToken, show);
   app.put('/users/:id', verifyAuthToken, update);
 };
 

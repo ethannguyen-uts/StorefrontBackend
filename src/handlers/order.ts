@@ -5,8 +5,15 @@ import { verifyAuthToken } from './middleware';
 const store: OrderStore = new OrderStore();
 
 const index = async (_req: Request, res: Response): Promise<void> => {
-  const orders = await store.index();
-  res.json(orders);
+  try {
+    const orders = await store.index();
+    res.json(orders);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400);
+      res.json(err.message);
+    } else throw new Error('Server error!');
+  }
 };
 
 const create = async (req: Request, res: Response): Promise<void> => {
@@ -78,8 +85,8 @@ const addProduct = async (req: Request, res: Response): Promise<void> => {
 };
 
 const orderRoutes = (app: express.Application): void => {
-  app.get('/orders', index);
-  app.post('/orders/:id', verifyAuthToken, show);
+  app.get('/orders', verifyAuthToken, index);
+  app.get('/orders/:id', verifyAuthToken, show);
   app.post('/orders', verifyAuthToken, create);
   app.post('/orders/:id/products', verifyAuthToken, addProduct);
 };

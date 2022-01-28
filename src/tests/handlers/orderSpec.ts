@@ -66,7 +66,9 @@ describe('Testing orders endpoints', () => {
   });
 
   it('index order endpoint, expect success', async () => {
-    const response = await request.get('/orders');
+    const response = await request
+      .get('/orders')
+      .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
     expect(response.body).toEqual([
       {
@@ -94,7 +96,7 @@ describe('Testing orders endpoints', () => {
 
   it('show order endpoint, expect success', async () => {
     const response = await request
-      .post('/orders/21')
+      .get('/orders/21')
       .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
     expect(response.body).toEqual({

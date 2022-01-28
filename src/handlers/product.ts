@@ -5,8 +5,14 @@ import { verifyAuthToken } from './middleware';
 const store = new ProductStore();
 
 const index = async (_req: Request, res: Response): Promise<void> => {
-  const listProduct: Product[] = await store.index();
-  res.json(listProduct);
+  try {
+    const listProduct: Product[] = await store.index();
+    res.json(listProduct);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json(err.message);
+    } else throw new Error('Server error!');
+  }
 };
 
 const create = async (req: Request, res: Response): Promise<void> => {
@@ -41,7 +47,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
   } catch (err) {
     if (err instanceof Error) {
       res.status(400).json(err.message);
-    }
+    } else throw new Error('Server error!');
   }
 };
 
@@ -54,14 +60,14 @@ const show = async (req: Request, res: Response): Promise<void> => {
     if (err instanceof Error) {
       res.status(400);
       res.json(err.message);
-    }
+    } else throw new Error('Server error!');
   }
 };
 
 const productRoutes = (app: express.Application): void => {
   app.get('/products', index);
   app.post('/products', verifyAuthToken, create);
-  app.post('/products/:id', verifyAuthToken, show);
+  app.get('/products/:id', verifyAuthToken, show);
 };
 
 export default productRoutes;

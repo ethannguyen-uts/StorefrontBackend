@@ -41,20 +41,20 @@ describe('Testing dashboard endpoints', () => {
   });
 
   it('get products by category endpoint, expect sucess', async () => {
-    const response = await request.post('/products-by-category').send('Food');
+    const response = await request.get('/products-by-category/Food');
 
     expect(response.status).toBe(200);
   });
   it('get current order by user, expect sucess', async () => {
     const response = await request
-      .post('/orders/users/1/current')
+      .get('/orders/users/1/current')
       .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
   });
 
   it('get completed orders by user endpoint, expect sucess', async () => {
     const response = await request
-      .post('/orders/users/1/complete')
+      .get('/orders/users/1/complete')
       .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
   });

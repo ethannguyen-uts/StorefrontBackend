@@ -64,7 +64,7 @@ describe('Testing products endpoints', () => {
 
   it('show product endpoint, expect sucess', async () => {
     const response = await request
-      .post('/products/41')
+      .get('/products/41')
       .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
     expect(response.body).toEqual({

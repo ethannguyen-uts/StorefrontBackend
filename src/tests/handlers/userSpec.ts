@@ -67,7 +67,7 @@ describe('Testing users endpoints', () => {
 
   it('show user endpoint, expect sucess', async () => {
     const response = await request
-      .post('/users/1')
+      .get('/users/1')
       .auth(token, { type: 'bearer' });
     expect(response.status).toBe(200);
   });
