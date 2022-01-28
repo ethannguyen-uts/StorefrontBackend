@@ -3,10 +3,10 @@
 - [Table of Contents](#-table-of-contents)
 - [API Requirements](#api-requirements)
 - [API Endpoints](#api-endpoints)
-  - [User](#user)
-  - [Product](#products)
+  - [Users](#user)
+  - [Products](#products)
   - [Orders](#orders)
-- [Data Shape](#data-shapes)
+- [Data Shapes](#data-shapes)
 
 ## API Requirements
 
@@ -416,7 +416,7 @@ Response:
 
 ## Data Shapes
 
-#### Product
+#### Products Data
 
 ```
 id SERIAL PRIMARY KEY,
@@ -425,7 +425,7 @@ price integer NOT NULL,
 category VARCHAR(77)
 ```
 
-#### User
+#### Users Data
 
 ```
 id SERIAL PRIMARY KEY,
@@ -434,7 +434,7 @@ last_name VARCHAR(77),
 password_digest VARCHAR
 ```
 
-#### Orders
+#### Orders Data
 
 General information: (orders table)
 
