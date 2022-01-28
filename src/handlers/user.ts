@@ -32,7 +32,9 @@ const create = async (req: Request, res: Response) => {
       u.last_name === undefined ||
       u.password === undefined
     ) {
-      throw new Error('User name and password is not included!');
+      throw new Error(
+        'User id, first name, last name and password must be included'
+      );
     }
 
     if (u.first_name === '' || u.last_name === '') {
@@ -53,7 +55,7 @@ const create = async (req: Request, res: Response) => {
       throw new Error('Token secret is not set');
     }
     const token = jwt.sign({ user: user }, tokenSecret);
-    res.json(token);
+    res.json({ token: token });
   } catch (err) {
     if (err instanceof Error) {
       res.status(400);
@@ -78,8 +80,8 @@ const show = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
   const user: User = {
     id: parseInt(req.params.id),
-    first_name: req.body.username,
-    last_name: req.body.username,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
     password: req.body.password,
   };
 
@@ -89,13 +91,13 @@ const update = async (req: Request, res: Response) => {
   } catch (err) {
     if (err instanceof Error) {
       res.status(400);
-      res.json(err);
+      res.json(err.message);
     }
   }
 };
 
 const userRoutes = (app: express.Application) => {
-  app.get('/users', index);
+  app.get('/users', verifyAuthToken, index);
   app.post('/users', create);
   app.post('/users/:id', verifyAuthToken, show);
   app.put('/users/:id', verifyAuthToken, update);

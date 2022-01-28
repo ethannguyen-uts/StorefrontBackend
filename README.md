@@ -7,16 +7,16 @@ Company stakeholders want to create an online storefront to showcase their great
 ### Installing
 
 Install all npm packages require using
+npm:
 
 ```
-//npm:
 npm install
 ```
 
-```
-//yarn:
-yarn add
+or yarn:
 
+```
+yarn add
 ```
 
 Install db-migrate package globally for database migration on the machine for terminal commands:
@@ -30,10 +30,10 @@ npm install db-migrate -g
 STEP 1:
 The project requires Postgres database:
 In a terminal tab, create and run the database:
-Switch to the postgres user su postgres:
+Switch to the postgres user :
 
 ```
-start psql
+su postgres
 psql postgres
 ```
 
@@ -96,23 +96,17 @@ The database server will run on port: 5432
 In the project directory, to build the application run the command
 
 ```
-
 npm run build
-
 ```
 
 To test the api run the command
 
 ```
-
 npm run test
-
 ```
 
 Start the api server on port 3000:
 
 ```
-
 npm run watch
-
 ```

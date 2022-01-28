@@ -82,7 +82,7 @@ export class UserStore {
       const pepper: string = BCRYPT_PASSWORD ? BCRYPT_PASSWORD : '';
       const saltRounds: number = SALT_ROUNDS ? parseInt(SALT_ROUNDS) : 1;
       const sql =
-        'UPDATE users SET first_name = $2, last_name = $3, password_digest = $4 WHERE id = $1 RETURNING *';
+        'UPDATE users SET first_name = $2, last_name = $3, password_digest = $4 WHERE id = $1 RETURNING id, first_name, last_name';
       const conn = await Client.connect();
       const hash = bcrypt.hashSync(a.password + pepper, saltRounds);
       const result = await conn.query(sql, [
@@ -91,11 +91,12 @@ export class UserStore {
         a.last_name,
         hash,
       ]);
+      if (!result.rows.length) throw new Error('Invalid user id');
       const user = result.rows[0];
       conn.release();
       return user;
     } catch (err) {
-      throw new Error(`Could not update user: userId ${a.id}}. Error: ${err}`);
+      throw new Error(`Could not update user: userId ${a.id}. Error: ${err}`);
     }
   };
 

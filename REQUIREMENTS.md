@@ -6,34 +6,127 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 
+#### Users
+
+Some API endpoints will require a jwt token to access, to receive a token, create a user by using the endpoint:
+
+- Create a new user: (args: User)
+
+```
+ POST /users
+```
+
+**Request body parameter**
+
+|         Name | Required |  Type  | Description                                        |
+| -----------: | :------: | :----: | -------------------------------------------------- |
+|         `id` | required | number | Id of the user. <br/><br/>                         |
+| `first_name` | required | string | First name<br/><br/>                               |
+|  `last_name` | required | string | Last name <br/><br/>                               |
+|   `password` | required | string | Password: length must be greater thatn 6<br/><br/> |
+
+**Example Response**:
+
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJmaXJzdF9uYW1lIjoiVGVzdCIsImxhc3RfbmFtZSI6IkJheSIsInBhc3N3b3JkX2RpZ2VzdCI6IiQyYiQxMCRPLnVkMm9rMjVLM2p0SzZjYXVCL3EuVHVTbWRPb1BLdW85WGZROTFBWTdNd1lyV0l6ODIzYSJ9LCJpYXQiOjE2NDMzMzA2MTJ9.k5tDYrK1Iub4OzcqmcKnWfJb9vefPp8zzWipLUkVsag"
+}
+```
+
+For token required endpoints, user must add a bearer token in request header for authorisation
+
+- Index: List all the user [token required]
+
+```
+ GET /users
+```
+
+**Example Response**:
+
+```
+[
+    {
+        "id": 1,
+        "first_name": "admin",
+        "last_name": "admin"
+    }
+]
+```
+
+- Show: get a user base on id (args: id)[token required]
+
+```
+POST /users/:id
+```
+
+Example Response:
+
+```
+{
+    "id": 1,
+    "first_name": "admin",
+    "last_name": "admin"
+}
+```
+
+- Update a user based on id [token required]
+
+```
+PUT /users/:id
+```
+
+**Request body parameter**
+
+|         Name | Required |  Type  | Description                                            |
+| -----------: | :------: | :----: | ------------------------------------------------------ |
+| `first_name` | required | string | New first name<br/><br/>                               |
+|  `last_name` | required | string | New last name <br/><br/>                               |
+|   `password` | required | string | New password: length must be greater thatn 6<br/><br/> |
+
+Example Response:
+
+```
+{
+    "id": 11,
+    "first_name": "AAA",
+    "last_name": "Bay"
+}
+```
+
 #### Products
 
 A product within the Store.
 
 Endpoints
 
-```html
-<span
-  style="padding: 2px 4px;
-font-size: 90%;
-color: #c7254e;
-background-color: #f9f2f4;
-border-radius: 4px;"
-  >GET /products/</span
->
--- get all the products
-<span
-  style="padding: 2px 4px;
-font-size: 90%;
-color: #c7254e;
-background-color: #f9f2f4;
-border-radius: 4px;"
-  >POST /products/</span
->
--- create a new product
+```
+ GET /products/
 ```
 
-/people/schema/ -- view the JSON schema for this resource
+Example Request:
+
+```
+http://localhost:3000/products
+```
+
+Example Response:
+
+```
+[
+    {
+        "id": 1,
+        "name": "Donut",
+        "price": 20,
+        "category": "Food"
+    },
+    {
+        "id": 2,
+        "name": "Coke",
+        "price": 18,
+        "category": "Drink"
+    }
+]
+```
 
 - Index:
   List all the products that exists in the database
@@ -41,12 +134,6 @@ border-radius: 4px;"
 - Create (args: Product)[token required]
 - [OPTIONAL] Top 5 most popular products
 - [OPTIONAL] Products by category (args: product category)
-
-#### Users
-
-- Index [token required]
-- Show (args: id)[token required]
-- Create (args: User)[token required]
 
 #### Orders
 
@@ -76,3 +163,7 @@ border-radius: 4px;"
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+```
+
+```
