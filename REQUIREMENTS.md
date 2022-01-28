@@ -8,7 +8,35 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Products
 
-- Index
+A product within the Store.
+
+Endpoints
+
+```html
+<span
+  style="padding: 2px 4px;
+font-size: 90%;
+color: #c7254e;
+background-color: #f9f2f4;
+border-radius: 4px;"
+  >GET /products/</span
+>
+-- get all the products
+<span
+  style="padding: 2px 4px;
+font-size: 90%;
+color: #c7254e;
+background-color: #f9f2f4;
+border-radius: 4px;"
+  >POST /products/</span
+>
+-- create a new product
+```
+
+/people/schema/ -- view the JSON schema for this resource
+
+- Index:
+  List all the products that exists in the database
 - Show (args: product id)
 - Create (args: Product)[token required]
 - [OPTIONAL] Top 5 most popular products
