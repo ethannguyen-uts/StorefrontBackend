@@ -1,4 +1,14 @@
-# API Requirements
+## Table of Contents
+
+- [Table of Contents](#-table-of-contents)
+- [API Requirements](#api-requirements)
+- [API Endpoints](#api-endpoints)
+  - [User](#user)
+  - [Product](#products)
+  - [Orders](#orders)
+- [Data Shape](#data-shapes)
+
+## API Requirements
 
 The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
 
@@ -18,12 +28,12 @@ Some API endpoints will require a jwt token to access, to receive a token, creat
 
 Request body parameter
 
-|         Name | Required |  Type  | Description                                       |
-| -----------: | :------: | :----: | :------------------------------------------------ |
-|         `id` | required | number | Id of the user. <br/><br/>                        |
-| `first_name` | required | string | First name<br/><br/>                              |
-|  `last_name` | required | string | Last name <br/><br/>                              |
-|   `password` | required | string | Password: length must be greater than 6<br/><br/> |
+|         Name | Required |  Type  | Description                             |
+| -----------: | :------: | :----: | :-------------------------------------- |
+|         `id` | required | number | Id of the user.                         |
+| `first_name` | required | string | First name                              |
+|  `last_name` | required | string | Last name                               |
+|   `password` | required | string | Password: length must be greater than 6 |
 
 Response:
 
@@ -77,11 +87,11 @@ PUT /users/:id
 
 Request body parameter:
 
-|         Name | Required |  Type  | Description                                           |
-| -----------: | :------: | :----: | :---------------------------------------------------- |
-| `first_name` | required | string | New first name<br/><br/>                              |
-|  `last_name` | required | string | New last name <br/><br/>                              |
-|   `password` | required | string | New password: length must be greater than 6<br/><br/> |
+|         Name | Required |  Type  | Description                                 |
+| -----------: | :------: | :----: | :------------------------------------------ |
+| `first_name` | required | string | New first name                              |
+|  `last_name` | required | string | New last name                               |
+|   `password` | required | string | New password: length must be greater than 6 |
 
 Response:
 
@@ -138,12 +148,12 @@ Response:
 
 Request body parameter
 
-|       Name | Required |  Type  | Description                                   |
-| ---------: | :------: | :----: | :-------------------------------------------- |
-|       `id` | required | number | Id of the product, must be integer <br/><br/> |
-|     `name` | required | string | Product name<br/><br/>                        |
-|    `price` | required | number | Product price, must be integer<br/><br/>      |
-| `category` | required | string | Product category<br/><br/>                    |
+|       Name | Required |  Type  | Description                        |
+| ---------: | :------: | :----: | :--------------------------------- |
+|       `id` | required | number | Id of the product, must be integer |
+|     `name` | required | string | Product name                       |
+|    `price` | required | number | Product price, must be integer     |
+| `category` | required | string | Product category                   |
 
 Response:
 
@@ -229,9 +239,9 @@ Response:
 
 Request body parameter
 
-|       Name | Required |  Type  | Description                |
-| ---------: | :------: | :----: | :------------------------- |
-| `category` | required | string | Product category<br/><br/> |
+|       Name | Required |  Type  | Description      |
+| ---------: | :------: | :----: | :--------------- |
+| `category` | required | string | Product category |
 
 Response:
 
@@ -286,11 +296,11 @@ Response:
 
 Request body parameter
 
-|      Name | Required |  Type  | Description                                      |
-| --------: | :------: | :----: | :----------------------------------------------- |
-|      `id` | required | number | Id of the order, must be integer <br/><br/>      |
-|  `status` | required | string | must be active or complete<br/><br/>             |
-| `user_id` | required | number | Owner id of the order, must be integer<br/><br/> |
+|      Name | Required |  Type  | Description                            |
+| --------: | :------: | :----: | :------------------------------------- |
+|      `id` | required | number | Id of the order, must be integer       |
+|  `status` | required | string | Must be active or complete             |
+| `user_id` | required | number | Owner id of the order, must be integer |
 
 Response:
 
@@ -310,10 +320,10 @@ POST /orders/:id/products
 
 Request body parameter
 
-|         Name | Required |  Type  | Description                                   |
-| -----------: | :------: | :----: | :-------------------------------------------- |
-| `product_id` | required | number | Id of the product, must be integer <br/><br/> |
-|   `quantity` | required | number | Must be integer and greater than 0<br/><br/>  |
+|         Name | Required |  Type  | Description                        |
+| -----------: | :------: | :----: | :--------------------------------- |
+| `product_id` | required | number | Id of the product, must be integer |
+|   `quantity` | required | number | Must be integer and greater than 0 |
 
 Example Request:
 
