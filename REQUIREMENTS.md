@@ -3,7 +3,7 @@
 - [Table of Contents](#-table-of-contents)
 - [API Requirements](#api-requirements)
 - [API Endpoints](#api-endpoints)
-  - [Users](#user)
+  - [Users](#users)
   - [Products](#products)
   - [Orders](#orders)
 - [Data Shapes](#data-shapes)
