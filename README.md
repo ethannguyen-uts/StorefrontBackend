@@ -2,7 +2,7 @@
 
 ## About
 
-Company stakeholders want to create an online storefront to showcase their great product ideas. An API backend server is required to support users to browse an index of all products, see the specifics of a single product, and add products to an order that they can view on a cart page. The API service provides REST API endpoints to support the application. For detailed information, please read the REQUIREMENTS.md file.
+Company stakeholders want to create an online storefront to showcase their great product ideas. An API backend server is required to support users to browse an index of all products, see the specifics of a single product, and add products to an order that they can view on a cart page. The API service provides REST API endpoints to support the application. For detailed information, please read the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
 ### Installing
 
