@@ -4,7 +4,7 @@
 
 Company stakeholders want to create an online storefront to showcase their great product ideas. An API backend server is required to support users to browse an index of all products, see the specifics of a single product, and add products to an order that they can view on a cart page. The API service provides REST API endpoints to support the application. For detailed API endpoints, please read the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
-This is the API backend server for My Store web page. If you want visit the front-end, please follow this link:[link](https://github.com/ethannguyen-uts/MyStore-Angular-App).
+This is the API backend server for My Store web page. If you want visit the front-end, please follow this [link](https://github.com/ethannguyen-uts/MyStore-Angular-App).
 
 ## Tech Stack
 
