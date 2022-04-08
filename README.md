@@ -2,9 +2,20 @@
 
 ## About
 
-Company stakeholders want to create an online storefront to showcase their great product ideas. An API backend server is required to support users to browse an index of all products, see the specifics of a single product, and add products to an order that they can view on a cart page. The API service provides REST API endpoints to support the application. For detailed information, please read the [REQUIREMENTS.md](REQUIREMENTS.md) file.
+Company stakeholders want to create an online storefront to showcase their great product ideas. An API backend server is required to support users to browse an index of all products, see the specifics of a single product, and add products to an order that they can view on a cart page. The API service provides REST API endpoints to support the application. For detailed API endpoints, please read the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
-### Installing
+This is the API backend server for My Store web page. If you want visit the front-end, please follow this link:[link](https://github.com/ethannguyen-uts/MyStore-Angular-App).
+
+## Tech Stack
+
+- Node
+- Express
+- TypeScript
+- JSON Web Token
+- Postgres
+- Jasmine
+
+## Installing
 
 Install all npm packages require using
 npm:
@@ -25,7 +36,7 @@ Install db-migrate package globally for database migration on the machine for te
 npm install db-migrate -g
 ```
 
-### Database setup
+## Database setup
 
 STEP 1:
 The project requires Postgres database:
@@ -91,7 +102,7 @@ In database.json file, check the configurations:
 
 The database server will run on port: 5432
 
-### Starting the API server:
+## Starting the API server:
 
 In the project directory, to build the application run the command
 
@@ -110,3 +121,8 @@ Start the api server on port 3000:
 ```
 npm run watch
 ```
+
+## Deploy
+
+Please follow this link to the deploy repository: [link](https://github.com/ethannguyen-uts/MyStore-fullstack)
+• The project was hosted on AWS Cloud Service (AWS Elastic Beanstalk, AWS S3, AWS RDS) that satisfy the CI/CD using CircleCI pipeline: http://mystore-frontend-bucket.s3-website-us-west-2.amazonaws.com
