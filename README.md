@@ -124,5 +124,5 @@ npm run watch
 
 ## Deploy
 
-Please follow this link to the deploy repository: [link](https://github.com/ethannguyen-uts/MyStore-fullstack)
-• The project was hosted on AWS Cloud Service (AWS Elastic Beanstalk, AWS S3, AWS RDS) that satisfy the CI/CD using CircleCI pipeline: http://mystore-frontend-bucket.s3-website-us-west-2.amazonaws.com
+- Please follow this [link](https://github.com/ethannguyen-uts/MyStore-fullstack) to the deploy repository.
+- The project was hosted on AWS Cloud Service (AWS Elastic Beanstalk, AWS S3, AWS RDS) that satisfy the CI/CD using CircleCI pipeline: http://mystore-frontend-bucket.s3-website-us-west-2.amazonaws.com
